@@ -1,0 +1,135 @@
+openapi: 3.0.0
+info:
+  title: Cloud Native Gamestore - Product
+  description:
+    Microservice that contains CRUD functionality for Products.
+  version: 0.0.1
+servers:
+  - url: 'http://localhost:7004'
+    description: Local dev server
+    
+paths:
+  /products:
+    get:
+      summary: Retrieves all the Products.
+      responses:
+        '200':
+          description: Successfully found Products.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Products'
+    post:
+      summary: Creates a new product entry with the given information
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Products'
+      responses:
+        '201':
+          description: A product object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Products'
+        '400':
+          description: Bad request. Invalid request syntax.
+    put:
+      summary: Updated the entry for the product with the given ID.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Products'
+      responses:
+        '200':
+          description: Product successfully updated.
+        '400':
+          description: Bad request. Invalid request syntax.
+  /products/{id}:
+    get:
+      summary: Retrieves the entry for the product with the give ID.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the product you would like to retrieve.
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+      responses:
+        '200':
+          description: Product object successfully matched with given ID.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Products'
+    delete:
+      summary: Deletes the entry for the product with the given ID.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the product you would like to delete.
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+      responses:
+        '200':
+          description: Product successfully deleted.
+#  Retail Endpoints
+  /products/inventory:
+    get:
+      summary: Retrieves a list of products by what's available in the inventory. 
+      responses:
+        '200':
+          description: Products successfully retrieved.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Products'
+  /products/invoice/{id}:
+    get:
+      summary: Retrieves products by the Invoice ID.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the invoice you would like to retrieve with associated products. 
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+      responses:
+        '200': 
+          description: Invoice object successfully matched with given ID.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Products'
+        '400':
+            description: Invalid ID provided. Please try again.  
+components:
+  schemas:
+    Products:
+      properties:
+        id:
+          type: integer
+        productName:
+          type: string
+        productDescription:
+          type: string
+        listPrice:
+          type: number
+        unitCost:
+          type: number
+      required:
+        - productName
+        - productDescription
+        - listPrice
+        - unitCost

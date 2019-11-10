@@ -1,0 +1,97 @@
+openapi: 3.0.0
+info:
+  title: Cloud Native Gamestore - Inventory
+  description:
+    Microservice that contains CRUD functionality for Inventory.
+  version: 0.0.1
+servers:
+  - url: 'http://localhost:7003'
+    description: Local dev server
+    
+paths:
+  /inventory:
+    get:
+      summary: Retrieves all the Inventory and returns in a List.
+      responses:
+        '200':
+          description: Successfully found all Inventory.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Inventory'
+    post:
+      summary: Creates a new inventory entry with the given information
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Inventory'
+      responses:
+        '201':
+          description: An inventory object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Inventory'
+        '400':
+          description: Bad request. Invalid request syntax.
+    put:
+      summary: Updated the entry for the inventory with the given ID.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Inventory'
+      responses:
+        '200':
+          description: Inventory successfully updated.
+        '400':
+          description: Bad request. Invalid request syntax.
+  /inventory/{id}:
+    get:
+      summary: Retrieves the entry for the inventory with the give ID.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the inventory you would like to retrieve.
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+      responses:
+        '200':
+          description: Inventory object successfully matched with given ID.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Inventory'
+    delete:
+      summary: Deletes the entry for the inventory with the given ID.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the inventory you would like to delete.
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+      responses:
+        '200':
+          description: Inventory successfully deleted.
+components:
+  schemas:
+    Inventory:
+      properties:
+        id:
+          type: integer
+        productId:
+          type: integer
+        quantity:
+          type: integer
+      required:
+        - productId
+        - quantity

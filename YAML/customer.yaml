@@ -1,0 +1,121 @@
+openapi: 3.0.0
+info:
+  title: Cloud Native Gamestore - Customer
+  description:
+    Microservice that contains CRUD functionality for Customers.
+  version: 0.0.1
+servers:
+  - url: 'http://localhost:7005'
+    description: Local dev server
+    
+paths:
+  /customer:
+    get:
+      summary: Retrieves all the Customers.
+      responses:
+        '200':
+          description: Successfully found Customers.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Customers'
+    post:
+      summary: Creates a new customer entry with the given information
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Customers'
+      responses:
+        '201':
+          description: A customer object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Customers'
+        '400':
+          description: Bad request. Invalid request syntax.
+    put:
+      summary: Updated the entry for the customer with the given ID.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Customers'
+      responses:
+        '200':
+          description: Customer successfully updated.
+        '400':
+          description: Bad request. Invalid request syntax.
+  /customers/{id}:
+    get:
+      summary: Retrieves the entry for the customer with the give ID.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the customer you would like to retrieve.
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+      responses:
+        '200':
+          description: Customer object successfully matched with given ID.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Customers'
+    delete:
+      summary: Deletes the entry for the customer with the given ID.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the customer you would like to delete.
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+      responses:
+        '200':
+          description: Customer successfully deleted.
+components:
+  schemas:
+    Customers:
+      properties:
+        id:
+          type: integer
+        firstName:
+          type: string
+        lastName:
+          type: string
+        street:
+          type: string
+        city:
+          type: string
+        zip:
+          type: string
+        email:
+          type: string
+        phone: 
+          type: string
+      required:
+        - firstName
+        - lastName
+        - street
+        - city
+        - zip
+        - email
+        - phone
+        
+        
+        
+        
+        
+        
+        
+        
+        

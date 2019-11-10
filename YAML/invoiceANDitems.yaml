@@ -1,0 +1,205 @@
+openapi: 3.0.0
+info:
+  title: Cloud Native Gamestore - Invoice & Invoice Items
+  description:
+    Microservice that contains CRUD functionality for Invoice.
+  version: 0.0.1
+servers:
+  - url: 'http://localhost:7002'
+    description: Local dev server
+    
+paths:
+  /invoices:
+    get:
+      summary: Retrieves all the Invoices.
+      responses:
+        '200':
+          description: Successfully found all Invoices.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Invoices'
+    post:
+      summary: Creates a new invoice entry with the given information
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Invoices'
+      responses:
+        '201':
+          description: An invoice object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Invoices'
+        '400':
+          description: Bad request. Invalid request syntax.
+    put:
+      summary: Updated the entry for the invoice with the given ID.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Invoices'
+      responses:
+        '200':
+          description: Invoice successfully updated.
+        '400':
+          description: Bad request. Invalid request syntax.
+  /invoices/{id}:
+    get:
+      summary: Retrieves the entry for the invoice with the give ID.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the invoice you would like to retrieve.
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+      responses:
+        '200':
+          description: Invoice object successfully matched with given ID.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Invoices'
+    delete:
+      summary: Deletes the entry for the invoice with the given ID.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the invoice you would like to delete.
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+      responses:
+        '200':
+          description: Invoice successfully deleted.
+# Retail Endpoints
+  /invoices/customer/{id}:
+    get:
+      description: Return a list of invoices by Customer ID.
+      parameters: 
+        - name: id
+          in: path
+          required: true
+          description: ID of the Customer you would like to retrieve.
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+      responses:
+        '200':
+          description: Invoice successfully retrieved by Customer ID.
+  /invoiceItems:
+    get:
+      summary: Retrieves all the Invoice Items.
+      responses:
+        '200':
+          description: Successfully found all Invoice Items.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvoiceItems'
+    post:
+      summary: Creates a new invoice item entry with the given information
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InvoiceItems'
+      responses:
+        '201':
+          description: An invoice item object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvoiceItems'
+        '400':
+          description: Bad request. Invalid request syntax.
+    put:
+      summary: Updated the entry for the invoice item with the given ID.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InvoiceItems'
+      responses:
+        '200':
+          description: Invoice item successfully updated.
+        '400':
+          description: Bad request. Invalid request syntax.
+  /invoiceItem/{id}:
+    get:
+      summary: Retrieves the entry for the invoice item with the give ID.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the invoice item you would like to retrieve.
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+      responses:
+        '200':
+          description: Invoice item object successfully matched with given ID.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvoiceItems'
+    delete:
+      summary: Deletes the entry for the invoice item with the given ID.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the invoice item you would like to delete.
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+      responses:
+        '200':
+          description: Invoice item successfully deleted.
+components:
+  schemas:
+    Invoices:
+      properties:
+        id:
+          type: integer
+        customerId:
+          type: integer
+        purchaseDate:
+          type: string
+      required:
+        - customerId
+        - purchaseDate
+    InvoiceItems:
+      properties:
+        id:
+          type: integer
+        invoiceId:
+          type: integer
+        inventoryId:
+          type: integer
+        quantity:
+          type: integer
+        unitPrice:
+          type: number
+          
+          
+          
+          
+          
+          
+          

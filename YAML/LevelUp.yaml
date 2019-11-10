@@ -1,0 +1,104 @@
+openapi: 3.0.0
+info:
+  title: Cloud Native Gamestore - Level Up
+  description:
+    Microservice that contains CRUD functionality for LevelUp rewards system.
+  version: 0.0.1
+servers:
+  - url: 'http://localhost:7001'
+    description: Local dev server
+    
+paths:
+  /levelup:
+    get:
+      summary: Retrieves a list of all the LevelUps.
+      responses:
+        '200':
+          description: Successfully found all LevelUps.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LevelUp'
+    post:
+      summary: Creates a new LevelUp entry with the given information
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LevelUp'
+      responses:
+        '201':
+          description: A LevelUp object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LevelUp'
+        '400':
+          description: Bad request. Invalid request syntax.
+    put:
+      summary: Updated the entry for the LevelUp with the given ID.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LevelUp'
+      responses:
+        '200':
+          description: LevelUp successfully updated.
+        '400':
+          description: Bad request. Invalid request syntax.
+  /levelup/{id}:
+    get:
+      summary: Retrieves the entry for the LevelUp with the give ID.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the LevelUp you would like to retrieve.
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+      responses:
+        '200':
+          description: LevelUp object successfully matched with given ID.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LevelUp'
+    delete:
+      summary: Deletes the entry for the LevelUp with the given ID.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the LevelUp you would like to delete.
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+      responses:
+        '200':
+          description: LevelUp successfully deleted.
+
+components:
+  schemas:
+    LevelUp:
+      properties:
+        id:
+          type: integer
+        customerId:
+          type: integer
+        points:
+          type: integer
+        memberDate:
+          type: string
+      required:
+        - customerId
+        - points
+        - memberDate
+    
+      
+          

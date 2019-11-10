@@ -1,0 +1,601 @@
+openapi: 3.0.0
+info:
+  title: Cloud Native Gamestore - Retail
+  description:
+    Microservice that contains CRUD functionality for Customers, Products, Inventory, Invoice, and Level Up.
+  version: 0.0.1
+servers:
+  - url: 'http://localhost:8181'
+    description: Local dev server
+    
+paths:
+  /customer:
+    get:
+      summary: Retrieves all the Customers.
+      responses:
+        '200':
+          description: Successfully found Customers.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Customers'
+    post:
+      summary: Creates a new customer entry with the given information
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Customers'
+      responses:
+        '201':
+          description: A customer object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Customers'
+        '400':
+          description: Bad request. Invalid request syntax.
+    put:
+      summary: Updated the entry for the customer with the given ID.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Customers'
+      responses:
+        '200':
+          description: Customer successfully updated.
+        '400':
+          description: Bad request. Invalid request syntax.
+  /customers/{id}:
+    get:
+      summary: Retrieves the entry for the customer with the give ID.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the customer you would like to retrieve.
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+      responses:
+        '200':
+          description: Customer object successfully matched with given ID.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Customers'
+    delete:
+      summary: Deletes the entry for the customer with the given ID.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the customer you would like to delete.
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+      responses:
+        '200':
+          description: Customer successfully deleted.
+  # Inventory
+  /inventory:
+    get:
+      summary: Retrieves all the Inventory and returns in a List.
+      responses:
+        '200':
+          description: Successfully found all Inventory.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Inventory'
+    post:
+      summary: Creates a new inventory entry with the given information
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Inventory'
+      responses:
+        '201':
+          description: An inventory object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Inventory'
+        '400':
+          description: Bad request. Invalid request syntax.
+    put:
+      summary: Updated the entry for the inventory with the given ID.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Inventory'
+      responses:
+        '200':
+          description: Inventory successfully updated.
+        '400':
+          description: Bad request. Invalid request syntax.
+  /inventory/{id}:
+    get:
+      summary: Retrieves the entry for the inventory with the give ID.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the inventory you would like to retrieve.
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+      responses:
+        '200':
+          description: Inventory object successfully matched with given ID.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Inventory'
+    delete:
+      summary: Deletes the entry for the inventory with the given ID.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the inventory you would like to delete.
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+      responses:
+        '200':
+          description: Inventory successfully deleted.
+  /invoices:
+    get:
+      summary: Retrieves all the Invoices.
+      responses:
+        '200':
+          description: Successfully found all Invoices.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Invoices'
+    post:
+      summary: Creates a new invoice entry with the given information
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Invoices'
+      responses:
+        '201':
+          description: An invoice object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Invoices'
+        '400':
+          description: Bad request. Invalid request syntax.
+    put:
+      summary: Updated the entry for the invoice with the given ID.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Invoices'
+      responses:
+        '200':
+          description: Invoice successfully updated.
+        '400':
+          description: Bad request. Invalid request syntax.
+  /invoices/{id}:
+    get:
+      summary: Retrieves the entry for the invoice with the give ID.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the invoice you would like to retrieve.
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+      responses:
+        '200':
+          description: Invoice object successfully matched with given ID.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Invoices'
+    delete:
+      summary: Deletes the entry for the invoice with the given ID.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the invoice you would like to delete.
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+      responses:
+        '200':
+          description: Invoice successfully deleted.
+# Retail Endpoints
+  /invoices/customer/{id}:
+    get:
+      description: Return a list of invoices by Customer ID.
+      parameters: 
+        - name: id
+          in: path
+          required: true
+          description: ID of the Customer you would like to retrieve.
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+      responses:
+        '200':
+          description: Invoice successfully retrieved by Customer ID.
+  /invoiceItems:
+    get:
+      summary: Retrieves all the Invoice Items.
+      responses:
+        '200':
+          description: Successfully found all Invoice Items.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvoiceItems'
+    post:
+      summary: Creates a new invoice item entry with the given information
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InvoiceItems'
+      responses:
+        '201':
+          description: An invoice item object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvoiceItems'
+        '400':
+          description: Bad request. Invalid request syntax.
+    put:
+      summary: Updated the entry for the invoice item with the given ID.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InvoiceItems'
+      responses:
+        '200':
+          description: Invoice item successfully updated.
+        '400':
+          description: Bad request. Invalid request syntax.
+  /invoiceItem/{id}:
+    get:
+      summary: Retrieves the entry for the invoice item with the give ID.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the invoice item you would like to retrieve.
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+      responses:
+        '200':
+          description: Invoice item object successfully matched with given ID.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvoiceItems'
+    delete:
+      summary: Deletes the entry for the invoice item with the given ID.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the invoice item you would like to delete.
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+      responses:
+        '200':
+          description: Invoice item successfully deleted.
+  /levelup:
+    get:
+      summary: Retrieves a list of all the LevelUps.
+      responses:
+        '200':
+          description: Successfully found all LevelUps.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LevelUp'
+    post:
+      summary: Creates a new LevelUp entry with the given information
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LevelUp'
+      responses:
+        '201':
+          description: A LevelUp object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LevelUp'
+        '400':
+          description: Bad request. Invalid request syntax.
+    put:
+      summary: Updated the entry for the LevelUp with the given ID.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LevelUp'
+      responses:
+        '200':
+          description: LevelUp successfully updated.
+        '400':
+          description: Bad request. Invalid request syntax.
+  /levelup/{id}:
+    get:
+      summary: Retrieves the entry for the LevelUp with the give ID.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the LevelUp you would like to retrieve.
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+      responses:
+        '200':
+          description: LevelUp object successfully matched with given ID.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LevelUp'
+    delete:
+      summary: Deletes the entry for the LevelUp with the given ID.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the LevelUp you would like to delete.
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+      responses:
+        '200':
+          description: LevelUp successfully deleted.
+  /products:
+    get:
+      summary: Retrieves all the Products.
+      responses:
+        '200':
+          description: Successfully found Products.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Products'
+    post:
+      summary: Creates a new product entry with the given information
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Products'
+      responses:
+        '201':
+          description: A product object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Products'
+        '400':
+          description: Bad request. Invalid request syntax.
+    put:
+      summary: Updated the entry for the product with the given ID.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Products'
+      responses:
+        '200':
+          description: Product successfully updated.
+        '400':
+          description: Bad request. Invalid request syntax.
+  /products/{id}:
+    get:
+      summary: Retrieves the entry for the product with the give ID.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the product you would like to retrieve.
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+      responses:
+        '200':
+          description: Product object successfully matched with given ID.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Products'
+    delete:
+      summary: Deletes the entry for the product with the given ID.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the product you would like to delete.
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+      responses:
+        '200':
+          description: Product successfully deleted.
+#  Retail Endpoints
+  /products/inventory:
+    get:
+      summary: Retrieves a list of products by what's available in the inventory. 
+      responses:
+        '200':
+          description: Products successfully retrieved.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Products'
+  /products/invoice/{id}:
+    get:
+      summary: Retrieves products by the Invoice ID.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the invoice you would like to retrieve with associated products. 
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+      responses:
+        '200': 
+          description: Invoice object successfully matched with given ID.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Products'
+        '400':
+            description: Invalid ID provided. Please try again.  
+components:
+  schemas:
+    Customers:
+      properties:
+        id:
+          type: integer
+        firstName:
+          type: string
+        lastName:
+          type: string
+        street:
+          type: string
+        city:
+          type: string
+        zip:
+          type: string
+        email:
+          type: string
+        phone: 
+          type: string
+      required:
+        - firstName
+        - lastName
+        - street
+        - city
+        - zip
+        - email
+        - phone
+    Inventory:
+      properties:
+        id:
+          type: integer
+        productId:
+          type: integer
+        quantity:
+          type: integer
+      required:
+        - productId
+        - quantity
+    Invoices:
+      properties:
+        id:
+          type: integer
+        customerId:
+          type: integer
+        purchaseDate:
+          type: string
+      required:
+        - customerId
+        - purchaseDate
+    InvoiceItems:
+      properties:
+        id:
+          type: integer
+        invoiceId:
+          type: integer
+        inventoryId:
+          type: integer
+        quantity:
+          type: integer
+        unitPrice:
+          type: number
+    LevelUp:
+      properties:
+        id:
+          type: integer
+        customerId:
+          type: integer
+        points:
+          type: integer
+        memberDate:
+          type: string
+      required:
+        - customerId
+        - points
+        - memberDate
+    Products:
+      properties:
+        id:
+          type: integer
+        productName:
+          type: string
+        productDescription:
+          type: string
+        listPrice:
+          type: number
+        unitCost:
+          type: number
+      required:
+        - productName
+        - productDescription
+        - listPrice
+        - unitCost
+    
+        
+        
+        
+        
+        
+        
+        
+        
+        
